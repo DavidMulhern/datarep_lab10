@@ -1,25 +1,50 @@
-import logo from './logo.svg';
 import './App.css';
+import React, { Component } from 'react';
+// Three below are imports for my three components
+import Header from './components/Header';
+import Footer from './components/footer';
+import Content from './components/Content';
+// Importing style sheets
+import 'bootstrap/dist/css/bootstrap.min.css';
+// Three below are imports needed for the NavBar
+import { Navbar } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
+import { Nav } from 'react-bootstrap';
+// Importing react routing (DOM)
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  render() {
+    return (
+      // Router tag surround the whole <div> element
+      <Router>
+        <div className="App">
+
+          <Navbar bg="primary" variant="dark">
+            <Container>
+              <Navbar.Brand href="#home">Navbar</Navbar.Brand>
+              <Nav className="me-auto">
+                {/* href will mirror the url. Ex- localhost:3000/read */}
+                <Nav.Link href="/">Home</Nav.Link>
+                <Nav.Link href="/read">Read</Nav.Link>
+                <Nav.Link href="/create">Create</Nav.Link>
+              </Nav>
+            </Container>
+          </Navbar>
+
+          <br />
+
+          <Switch>
+            {/* path will tie to component ex- /create now calls/displays Header component */}
+            <Route path='/' component={Content} exact />
+            <Route path='/create' component={Header} exact />
+            <Route path='/read' component={Footer} exact />
+          </Switch>
+
+        </div>
+      </Router>
+    );
+  }
 }
 
 export default App;
