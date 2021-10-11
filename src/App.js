@@ -12,6 +12,8 @@ import { Container } from 'react-bootstrap';
 import { Nav } from 'react-bootstrap';
 // Importing react routing (DOM)
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Create from './components/create';
+import Read from './components/read';
 
 class App extends Component {
   render() {
@@ -37,8 +39,8 @@ class App extends Component {
           <Switch>
             {/* path will tie to component ex- /create now calls/displays Header component */}
             <Route path='/' component={Content} exact />
-            <Route path='/create' component={Header} exact />
-            <Route path='/read' component={Footer} exact />
+            <Route path='/create' component={Create} exact />
+            <Route path='/read' component={Read} exact />
           </Switch>
 
         </div>
