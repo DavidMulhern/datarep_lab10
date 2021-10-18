@@ -1,36 +1,32 @@
 import { Component } from "react";
 import Movies from "./movies";
+// Import axios in order to be able to work with HTTP client
+import axios from "axios";
 
 // Make sure its an "export class"
 export class Read extends Component{
 
-    // State at work - Reead component
+
+    // This is the life cycle hook
+    // REF: https://reactjs.org/docs/state-and-lifecycle.html
+    componentDidMount(){
+
+        // axios, go get the http data from a client
+        axios.get('https://jsonblob.com/api/jsonblob/894944504570986496')
+        .then((response)=>{ // When it comes back aka call back function
+            this.setState({movies: response.data.movies}) // updates the below movies array
+        }) 
+        .catch((error)=>{
+            console.log(error);
+        }); // If it doesn't work
+
+    }
+
+    // State at work - Read component
     state = {
 
         // movies object
-        movies: [
-            {
-            "Title": "Avengers: Infinity War",
-            "Year": "2018",
-            "imdbID": "tt4154756",
-            "Type": "movie",
-            "Poster": "https://m.media-amazon.com/images/M/MV5BMjMxNjY2MDU1OV5BMl5BanBnXkFtZTgwNzY1MTUwNTM@._V1_SX300.jpg"
-            },
-            {
-            "Title": "Captain America: Civil War",
-            "Year": "2016",
-            "imdbID": "tt3498820",
-            "Type": "movie",
-            "Poster": "https://m.media-amazon.com/images/M/MV5BMjQ0MTgyNjAxMV5BMl5BanBnXkFtZTgwNjUzMDkyODE@._V1_SX300.jpg"
-            },
-            {
-            "Title": "Charlie Wilson's War",
-            "Year": "2007",
-            "imdbID": "tt0472062",
-            "Type": "movie",
-            "Poster": "https://m.media-amazon.com/images/M/MV5BMTgwMDgwMDc4MF5BMl5BanBnXkFtZTYwOTU3MDM4._V1_SX300.jpg"
-            }
-            ]            
+        movies: []            
     };
 
     render(){
