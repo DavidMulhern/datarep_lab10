@@ -18,7 +18,7 @@ export class Movies extends Component{
         // .map splits the collection into 4 individual movies
         return this.props.moviesObject.map((movie)=>{
             // A movie item getting movie data passed to it
-            return <MovieItem movie={movie}></MovieItem>
+            return <MovieItem movie={movie} key={movie.imbdID}></MovieItem>
         })
     }
 }

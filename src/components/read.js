@@ -11,8 +11,8 @@ export class Read extends Component{
     // REF: https://reactjs.org/docs/state-and-lifecycle.html
     componentDidMount(){
 
-        // axios, go get the http data from a client
-        axios.get('https://jsonblob.com/api/jsonblob/894944504570986496')
+        // ****** axios, go get the http data from server *******
+        axios.get('http://localhost:4000/api/movies')
         .then((response)=>{ // When it comes back aka call back function
             this.setState({movies: response.data.movies}) // updates the below movies array
         }) 

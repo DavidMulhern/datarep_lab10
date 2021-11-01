@@ -1,4 +1,6 @@
 import { Component } from "react";
+// axios, ability to talk http
+import axios from "axios";
 
 // Make sure its an "export class"
 export class Create extends Component {
@@ -20,6 +22,17 @@ export class Create extends Component {
 
     handleSubmit(event) {
 
+        const NewMovie = {
+            Title:this.state.Title,
+            Year:this.state.Year,
+            Poster:this.state.Poster
+        };
+        // Making a post request and past the NewMovie object - Async
+        axios.post('http://localhost:4000/api/movies', NewMovie)
+        .then((data)=>{console.log(data) // Call back function
+        })
+        .catch((err)=>{console.log(err)
+        })
         event.preventDefault();
 
         // Printing new entries to screen
