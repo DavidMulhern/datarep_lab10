@@ -14,7 +14,7 @@ export class Read extends Component{
         // ****** axios, go get the http data from server *******
         axios.get('http://localhost:4000/api/movies')
         .then((response)=>{ // When it comes back aka call back function
-            this.setState({movies: response.data.movies}) // updates the below movies array
+            this.setState({movies: response.data}) // ** NEW ** Removed .movies as it is now getting information from mongo
         }) 
         .catch((error)=>{
             console.log(error);

@@ -6,6 +6,8 @@ const app = express()
 const port = 4000
 // get express to determine what directory we are in, using a package called path
 const path = require('path')
+// Include mongoose library
+const mongoose = require('mongoose');
 
 const cors = require('cors');
 app.use(cors());
@@ -26,6 +28,25 @@ const bodyParser = require("body-parser")
 app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
+
+//                                             add PW                           add DB name "movies"             
+const myConnectionString = 'mongodb+srv://admin:admin@cluster0.ilny4.mongodb.net/movies?retryWrites=true&w=majority';
+// Using mongoose to connect server to the mongoDB
+mongoose.connect(myConnectionString, {useNewUrlParser: true});
+
+// Define schema for Database
+const Schema = mongoose.Schema;
+
+// documents of the collection
+var movieSchema = new Schema({
+    title:String,
+    year:String,
+    poster:String
+});
+
+// Use schema to create a new model for DB (movie collection, schema)
+// refer to the below model when wanting to interact with the DB
+var MovieModel = mongoose.model("movie", movieSchema)
 
 // when we visit local host 3000, it will send the below back
 // also where we setup our routes 
@@ -53,23 +74,37 @@ app.get('/hello/:name', (req, res)=>{
 app.get('/api/movies', (req, res)=>{
 
     // New variable with data, JSON list this time - An array[] of objects {}
-    const myMovies= 
-    [
-        {
-        "Title": "Avengers: Infinity War",
-        "Year": "2018",
-        "Poster": "https://m.media-amazon.com/images/M/MV5BMjMxNjY2MDU1OV5BMl5BanBnXkFtZTgwNzY1MTUwNTM@._V1_SX300.jpg"
-        },
-        {
-        "Title": "Captain America: Civil War",
-        "Year": "2016",
-        "Poster": "https://m.media-amazon.com/images/M/MV5BMjQ0MTgyNjAxMV5BMl5BanBnXkFtZTgwNjUzMDkyODE@._V1_SX300.jpg"
-        }
-    ];
+    // const myMovies= 
+    // [
+    //     {
+    //     "Title": "Avengers: Infinity War",
+    //     "Year": "2018",
+    //     "Poster": "https://m.media-amazon.com/images/M/MV5BMjMxNjY2MDU1OV5BMl5BanBnXkFtZTgwNzY1MTUwNTM@._V1_SX300.jpg"
+    //     },
+    //     {
+    //     "Title": "Captain America: Civil War",
+    //     "Year": "2016",
+    //     "Poster": "https://m.media-amazon.com/images/M/MV5BMjQ0MTgyNjAxMV5BMl5BanBnXkFtZTgwNjUzMDkyODE@._V1_SX300.jpg"
+    //     }
+    // ];
+
+    // find document in the DB
+    MovieModel.find((err, data) =>{
+        res.json(data)
+    })
         
     // JSON response {newObject:myMovies}
-    res.json({movies:myMovies}) 
+    // res.json({movies:myMovies}) 
     // This now returns as JSON data at the URL http://localhost:3000/api/movies
+})
+
+// Seraching for a document with the id
+app.get('/api/movies/:id', (req, res)=>{
+    console.log(req.params.id);
+
+    MovieModel.findById(req.params.id, (err,data) =>{
+        res.json(data);
+    })
 })
 
 // Send html back
@@ -111,7 +146,14 @@ app.post('/api/movies', (req, res)=>{
     console.log(req.body.Year)
     console.log(req.body.Poster)
 
-    res.send('Data received ')
+    MovieModel.create({
+        title:req.body.Title,
+        year:req.body.Year,
+        poster:req.body.Poster
+    });
+
+    // Don't forget to have a response to see out the .post
+    res.send('Item Added');
 })
 
 // listenng at port 3000 - setting up server
