@@ -14,6 +14,7 @@ import { Nav } from 'react-bootstrap';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Create from './components/create';
 import Read from './components/read';
+import Edit from './components/edit';
 
 class App extends Component {
   render() {
@@ -37,10 +38,11 @@ class App extends Component {
           <br />
 
           <Switch>
-            {/* path will tie to component ex- /create now calls/displays Header component */}
+            {/* path will tie to component ex- /create now calls/displays Header component // Edit now also added */}
             <Route path='/' component={Content} exact />
             <Route path='/create' component={Create} exact />
             <Route path='/read' component={Read} exact />
+            <Route path={"/edit/:id"} component={Edit}></Route> 
           </Switch>
 
         </div>

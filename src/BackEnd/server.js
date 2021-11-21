@@ -98,13 +98,24 @@ app.get('/api/movies', (req, res)=>{
     // This now returns as JSON data at the URL http://localhost:3000/api/movies
 })
 
-// Seraching for a document with the id
+// Searching for a document with the id // Listening
 app.get('/api/movies/:id', (req, res)=>{
     console.log(req.params.id);
 
     MovieModel.findById(req.params.id, (err,data) =>{
         res.json(data);
     })
+})
+
+
+// Finding by id and updating 
+app.put('/api/movies/:id', (req, res)=>{
+    console.log("Update: " + req.params.id);
+
+    MovieModel.findByIdAndUpdate(req.params.id, req.body, {new:true}, 
+        (err, data)=>{
+            res.send(data); // This will fire async and update
+        })
 })
 
 // Send html back

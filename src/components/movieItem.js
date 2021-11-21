@@ -1,5 +1,6 @@
 import { Component } from "react";
 import Card from 'react-bootstrap/Card';
+import {Link} from 'react-router-dom'; // using a link for edit button
 
 // Make sure its an "export class"
 export class MovieItem extends Component {
@@ -25,6 +26,7 @@ export class MovieItem extends Component {
                             </footer>
                         </blockquote>
                     </Card.Body>
+                    <Link to={"/edit/" + this.props.movie._id} className="btn btn-primary">Edit link</Link>
                 </Card>
             </div>
         );
