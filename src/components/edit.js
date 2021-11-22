@@ -26,13 +26,13 @@ export class Edit extends Component {
         axios.get('http://localhost:4000/api/movies/' + this.props.match.params.id)
         .then((response)=>{
             this.setState({
-                Title:response.data.title,
-                Year:response.data.year,
-                Poster:response.data.poster,
+                Title:response.data.Title,
+                Year:response.data.Year,
+                Poster:response.data.Poster,
                 _id:response.data._id
             })
         })
-        .catch()
+        .catch();
     }
 
     handleSubmit(event) {
@@ -54,10 +54,18 @@ export class Edit extends Component {
         // console.log("button clicked, Title: " + this.state.Title + " Year: " + this.state.Year + " Poster: " + this.state.Poster);
 
         axios.put('http://localhost:4000/api/movies/' + this.state._id, NewMovie)
-        .then(res=>{
-            console.log(res.data)
-        })
+        .then((response)=>{console.log(response)})
+        // .then(res=>{
+        //     console.log(res) // res.data
+        // })
         .catch();
+
+        event.preventDefault();
+        this.setState({
+            Title:'',
+            Year:'',
+            Poster:''
+        });
     }
 
 
@@ -126,10 +134,8 @@ export class Edit extends Component {
                     <div className='form-group'>
                         <input type='submit' value="Edit Movie" className="btn btn-primary"></input>
                     </div>
-
                 </form>
-
-            </div >
+            </div>
         );
     }
 }

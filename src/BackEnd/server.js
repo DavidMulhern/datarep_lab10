@@ -8,8 +8,11 @@ const port = 4000
 const path = require('path')
 // Include mongoose library
 const mongoose = require('mongoose');
+// body-parser used for .post 
+const bodyParser = require("body-parser")
 
 const cors = require('cors');
+const { mainModule } = require('process');
 app.use(cors());
 app.use(function(req, res, next) {
 res.header("Access-Control-Allow-Origin", "*");
@@ -18,9 +21,6 @@ res.header("Access-Control-Allow-Headers",
 "Origin, X-Requested-With, Content-Type, Accept");
 next();
 });
-
-// body-parser used for .post 
-const bodyParser = require("body-parser")
 
 // The two below lines allow for parse of body of a http request 
 // app.use will fire EVERY TIME a request is made to the server 
@@ -31,22 +31,23 @@ app.use(bodyParser.json())
 
 //                                             add PW                           add DB name "movies"             
 const myConnectionString = 'mongodb+srv://admin:admin@cluster0.ilny4.mongodb.net/movies?retryWrites=true&w=majority';
+
 // Using mongoose to connect server to the mongoDB
-mongoose.connect(myConnectionString, {useNewUrlParser: true});
+mongoose.connect(myConnectionString, {useNewUrlParser: true}); // HERE
 
 // Define schema for Database
-const Schema = mongoose.Schema;
+// const Schema = mongoose.Schema; // HERE
 
 // documents of the collection
-var movieSchema = new Schema({
-    title:String,
-    year:String,
-    poster:String
+const movieSchema = new mongoose.Schema({
+    Title:String,
+    Year:String,
+    Poster:String
 });
 
 // Use schema to create a new model for DB (movie collection, schema)
 // refer to the below model when wanting to interact with the DB
-var MovieModel = mongoose.model("movie", movieSchema)
+const MovieModel = mongoose.model("movie", movieSchema)
 
 // when we visit local host 3000, it will send the below back
 // also where we setup our routes 
@@ -118,6 +119,16 @@ app.put('/api/movies/:id', (req, res)=>{
         })
 })
 
+// delete a record, using mongoose 
+app.delete('/api/movies/:id', (req, res)=>{
+    console.log("Delete Movie: " + req.params.id)
+
+    // send(date) just being used here to satisfy parameters, not using it
+    MovieModel.findByIdAndDelete(req.params.id,(err, data)=>{
+        res.send(data);
+    })
+})
+
 // Send html back
 app.get('/test', (req, res)=>{
 
@@ -158,9 +169,9 @@ app.post('/api/movies', (req, res)=>{
     console.log(req.body.Poster)
 
     MovieModel.create({
-        title:req.body.Title,
-        year:req.body.Year,
-        poster:req.body.Poster
+        Title:req.body.Title,
+        Year:req.body.Year,
+        Poster:req.body.Poster
     });
 
     // Don't forget to have a response to see out the .post
