@@ -11,16 +11,22 @@ const mongoose = require('mongoose');
 // body-parser used for .post 
 const bodyParser = require("body-parser")
 
-const cors = require('cors');
-const { mainModule } = require('process');
-app.use(cors());
-app.use(function(req, res, next) {
-res.header("Access-Control-Allow-Origin", "*");
-res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-res.header("Access-Control-Allow-Headers",
-"Origin, X-Requested-With, Content-Type, Accept");
-next();
-});
+// Serving stat files from react client app
+app.use(express.static(path.join(__dirname, '../build')));
+app.use('/static', express.static(path.join(__dirname, 'build//static')));
+
+// !! Cors no longer needed !!
+
+// const cors = require('cors');
+// const { mainModule } = require('process');
+// app.use(cors());
+// app.use(function(req, res, next) {
+// res.header("Access-Control-Allow-Origin", "*");
+// res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+// res.header("Access-Control-Allow-Headers",
+// "Origin, X-Requested-With, Content-Type, Accept");
+// next();
+// });
 
 // The two below lines allow for parse of body of a http request 
 // app.use will fire EVERY TIME a request is made to the server 
@@ -177,6 +183,11 @@ app.post('/api/movies', (req, res)=>{
     // Don't forget to have a response to see out the .post
     res.send('Item Added');
 })
+
+// This handles all requests that don't match
+app.get('*', (req,res) =>{
+    res.sendFile(path.join(__dirname+'/../build/index.html'));
+    });    
 
 // listenng at port 3000 - setting up server
 app.listen(port, () => {
